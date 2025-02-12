@@ -13,13 +13,43 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Booked {
+  true
+  false
+  pending
+  }
+
 model User {
-  id        String   @id @default(uuid())
-  email     String   @unique
-  phone     String   @unique
-  name      String?
+  id        String     @id @default(uuid())
+  email     String     @unique
+  phone     String     @unique
+  name      String     @unique
   password  String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  timeSlots TimeSlot[]
 }
 
+model Lane {
+  id        String     @id @default(uuid())
+  name      String
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  timeSlots TimeSlot[]
+}
+
+model TimeSlot {
+  id        String   @id @default(uuid())
+  phone    String
+  startTime DateTime
+  endTime   DateTime
+  isBooked  Booked  @default(false)
+  userId    String?  @unique
+  laneId    String
+  user      User?    @relation(fields: [userId], references: [id])
+  lane      Lane     @relation(fields: [laneId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([laneId, startTime])
+}
