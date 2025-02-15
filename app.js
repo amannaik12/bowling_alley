@@ -1,9 +1,10 @@
 import express from 'express';
-import authRoute from './src/routes/authRoute.js'; // Import the authRoute
-import cors from 'cors';
 import dotenv from 'dotenv';
-import bookSlotRoute from './src/routes/bookSlotRoute.js';
+import cors from 'cors';
+import authRoute from './src/routes/authRoute.js';
+import bookingRoute from './src/routes/bookingRoute.js';
 
+// Load environment variables
 dotenv.config();
 
 const port = process.env.PORT || 8000;
@@ -12,14 +13,14 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-app.use('/auth', authRoute); // Use the authRoute
-
-app.use('/book', bookSlotRoute);
+// Routes
+app.use('/auth', authRoute);
+app.use('/booking', bookingRoute);
 
 app.get('/', (req, res) => {
-    res.send('Welcome to the API');
+  res.send('Welcome to the API');
 });
 
-app.listen(port, () => {    
-    console.log(`Server running on port ${port}`);
+app.listen(port, () => {
+  console.log(`Server running on port ${port}`);
 });
