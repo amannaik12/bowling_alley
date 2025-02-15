@@ -9,6 +9,6 @@ router.post('/book', bookSlot);
 
 router.get('/:slotId', getSlotDetails);
 
-router.post('/cancel', cancelBooking);
+router.post('/cancel/:slotId', cancelBooking);
 
 export default router;
