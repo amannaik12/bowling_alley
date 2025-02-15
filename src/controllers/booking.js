@@ -134,4 +134,39 @@ export async function approveBooking(req, res) {
       console.error(error);
       return res.status(500).json({ message: 'Internal server error' });
     }
-  }
+  };
+
+  export async function cancelBooking(req, res) {
+    const { slotId } = req.body;
+  
+    if (!slotId) {
+      return res.status(400).json({ message: 'Slot ID is required' });
+    }
+  
+    try {
+      // Find the slot by ID
+      const slot = await prisma.slot.findUnique({
+        where: { id: slotId },
+      });
+  
+      if (!slot) {
+        return res.status(404).json({ message: 'Slot not found' });
+      }
+  
+      // Check if the slot is already booked
+      if (slot.status === 'false') {
+        return res.status(400).json({ message: 'Slot is already available' });
+      }
+  
+      // Update the slot status to 'false' (available again)
+      const updatedSlot = await prisma.slot.update({
+        where: { id: slotId },
+        data: { status: 'false' },
+      });
+  
+      return res.status(200).json({ message: 'Slot cancelled successfully', updatedSlot});
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({ message: 'Internal server error' });
+    }
+}

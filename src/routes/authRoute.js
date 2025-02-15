@@ -13,5 +13,4 @@ authRouter.post('/adminLogin', adminLogin);
 
 authRouter.post('/reset', resetBookedSlots);
 
-
 export default authRouter;
