@@ -17,7 +17,7 @@ enum Booked {
   true
   false
   pending
-  }
+}
 
 model User {
   id        String     @id @default(uuid())
@@ -29,12 +29,21 @@ model User {
   updatedAt DateTime   @updatedAt
 }
 
-model Slot{
+model Admin {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Slot {
   id        String     @unique
-  name     String    
-  timing   String
-  status   Booked    @default(false)
+  name      String     
+  timing    String
+  status    Booked     @default(false)  // Slot status can be: false (available), true (booked), or pending
   createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
+  updatedAt DateTime   @updatedAt
 }
 
