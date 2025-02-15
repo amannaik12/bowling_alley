@@ -141,3 +141,16 @@ export async function adminLogin(req, res) {
     return res.status(500).json({ message: 'Error logging in', error: error.message });
   }
 }
+
+export async function resetBookedSlots() {
+  try {
+    await prisma.slot.updateMany({
+      where: { status: { in: ["true", "pending"] } }, // Select slots with status "BOOKED" or "PENDING"
+      data: { status: "false" }, // Set them to "AVAILABLE"
+    });
+    console.log("All booked slots have been reset");
+  } 
+  catch (error) {
+    console.error("Error resetting slots:", error);
+  }
+};
